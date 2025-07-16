@@ -34,9 +34,11 @@
     const splashes = ["Type away each day to keep all the slowness away", "Obsidian is the best!"]
     const typing_window = document.getElementById("typing-window")
     const timerEl = document.getElementById("timer")
-    const wpmel = document.getElementById("WPM_VALUE")
+    // FIX: Corrected variable name from wpmel to wpmEl for consistency
+    const wpmEl = document.getElementById("WPM_VALUE")
     const accEl = document.getElementById("accuracy_value")
-    const rating = document.getElementById("rating_value")
+    // Note: Your HTML ID for the words value is "rating_VALUE".
+    const wordsEl = document.getElementById("rating_VALUE")
     let input = document.getElementById("hiddenInput")
 
     const typingText = [
@@ -65,7 +67,7 @@
     { word: "an", status: "pending" },
     { word: "*art*.", status: "pending" },
     { word: "\"", status: "pending" },
-    { word: "–", status: "pending" },
+    { word: "-", status: "pending" },
     { word: "Anonymous", status: "pending" }
   ],
 
@@ -106,7 +108,7 @@
     { word: "*italic*,", status: "pending" },
     { word: "and", status: "pending" },
     { word: "`inline", status: "pending" },
-    { word: "code`", status: "pending" },
+    { word: "code`", status:"pending"},
     { word: "must", status: "pending" },
     { word: "not", status: "pending" },
     { word: "confuse", status: "pending" },
@@ -120,7 +122,7 @@
   ],
 
   [
-    { word: "-", status: "pending" },
+    { word: "    -", status: "pending" },
     { word: "Nested", status: "pending" },
     { word: "lists", status: "pending" },
     { word: "(like", status: "pending" },
@@ -129,7 +131,7 @@
   ],
 
   [
-    { word: "-", status: "pending" },
+    { word: "    -", status: "pending" },
     { word: "And", status: "pending" },
     { word: "this", status: "pending" },
     { word: "one.", status: "pending" }
@@ -236,6 +238,7 @@
     let timerInterval = null;
     let correctChars = 0;
     let errorCount = 0;
+    let completedWords = 0;
 
 
     function startTimer(){
@@ -272,7 +275,9 @@
             let lineHTML = "";
             for (let wordIdx = 0; wordIdx < line.length; wordIdx++) {
                 // Render the word itself
+                const wordToFormat = line[wordIdx].word.replace(/ /g, '&nbsp;');
                 lineHTML += formatWord(
+                    wordToFormat,
                     line[wordIdx].word,
                     wordIdx,
                     lineIdx,
@@ -300,26 +305,30 @@
         }
     }
 
-    function formatWord(word, wordIdx, lineIdx, currentWord, currentLine, currentLetter){
-        let letters = word.split('').map((char, i) => {
+    function formatWord(originalWord, wordIdx, lineIdx, currentWord, currentLine, currentLetter){
+        let letters = originalWord.split('').map((char, i) => {
             let classes = "letter";
             if (lineIdx === currentLine && wordIdx === currentWord) {
                 if (i < currentLetter) {
-                    classes += " correct"
+                    classes += " correct";
                 } else if (i === currentLetter) {
-                    classes += " current-letter"
+                    classes += " current-letter";
                 }
             }
-            return `<span class="${classes}">${char}</span>`;
+            // Replace space characters with a non-breaking space for rendering.
+            const displayChar = (char === ' ') ? '&nbsp;' : char;
+            return `<span class="${classes}">${displayChar}</span>`;
         }).join('');
-        let wordClass = "word"
+
+        let wordClass = "word";
         if (lineIdx < currentLine || (lineIdx === currentLine && wordIdx < currentWord)) {
-            wordClass += " correct"
+            wordClass += " correct";
         } else {
             wordClass += " pending";
         }
         return `<span class="${wordClass}">${letters}</span>`;
     }
+
 
     renderText()
 
@@ -332,7 +341,11 @@
 
         // Get current word and check if we're at the space after it
         const wordObj = typingText[currentLine]?.[currentWord];
-        if (!wordObj) return; // End of test
+        
+        if (!wordObj) {
+            if(timerInterval) clearInterval(timerInterval);
+            return;
+        }
         const isAtEndOfWord = currentLetter === wordObj.word.length;
 
         // Clear previous error animations
@@ -341,15 +354,19 @@
         if (errorLetter) errorLetter.classList.remove('error');
 
         if (key === 'Enter') {
-            // Advance line on Enter
+            // FIX: Correctly find the next non-empty line without double-incrementing
             currentLine++;
-            while (typingText[currentLine]?.length === 0) currentLine++;
+            while (currentLine < typingText.length && typingText[currentLine].length === 0) {
+                currentLine++;
+            }
             currentWord = 0;
             currentLetter = 0;
         } else if (key === ' ' && isAtEndOfWord) {
             // Correct space press
             correctChars++;
             completedWords++;
+            const wordsEl = document.getElementById("rating_value");
+
             if(wordsEl) wordsEl.textContent = completedWords.toString().padStart(2, '0');
 
             if (currentWord < typingText[currentLine].length - 1) {
