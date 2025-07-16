@@ -11,8 +11,8 @@
 <div class="main-content">
 <h1 class="title">MarkDown type test</h1>
 
-<div id="splashphrase"></div>
-<div id="typing-window" class="container"> Hey there you are an alstarr</div>
+<div id="typing-window" class="container">
+</div>
 <div id="timer" class="container">00:00</div>
 <div id="stats">
     <div id="wpm" class="mini-container">
@@ -31,7 +31,6 @@
 </div>
 </div>
 <script>
-    const splashes = ["Type away each day to keep all the slowness away", "Obsidian is the best!"]
     const typing_window = document.getElementById("typing-window")
     const timerEl = document.getElementById("timer")
     // FIX: Corrected variable name from wpmel to wpmEl for consistency
@@ -50,183 +49,6 @@
     { word: "A", status: "pending" },
     { word: "True", status: "pending" },
     { word: "Test", status: "pending" }
-  ],
-
-  // Empty line
-  [],
-
-  // Line 3
-  [
-    { word: ">", status: "pending" },
-    { word: "\"Typing", status: "pending" },
-    { word: "isn't", status: "pending" },
-    { word: "just", status: "pending" },
-    { word: "a", status: "pending" },
-    { word: "skill;", status: "pending" },
-    { word: "it's", status: "pending" },
-    { word: "an", status: "pending" },
-    { word: "*art*.", status: "pending" },
-    { word: "\"", status: "pending" },
-    { word: "-", status: "pending" },
-    { word: "Anonymous", status: "pending" }
-  ],
-
-  [],
-
-  // Next paragraph
-  [
-    { word: "Welcome", status: "pending" },
-    { word: "to", status: "pending" },
-    { word: "the", status: "pending" },
-    { word: "**Ultimate", status: "pending" },
-    { word: "Markdown", status: "pending" },
-    { word: "Typing", status: "pending" },
-    { word: "Challenge**.", status: "pending" },
-  ],
-  [
-    { word: "Below,", status: "pending" },
-    { word: "you'll", status: "pending" },
-    { word: "encounter", status: "pending" },
-    { word: "a", status: "pending" },
-    { word: "maze", status: "pending" },
-    { word: "of", status: "pending" },
-    { word: "symbols,", status: "pending" },
-    { word: "syntax,", status: "pending" },
-    { word: "and", status: "pending" },
-    { word: "subtle", status: "pending" },
-    { word: "spacing", status: "pending" },
-    { word: "traps.", status: "pending" },
-    { word: "Stay", status: "pending" },
-    { word: "sharp:", status: "pending" }
-  ],
-
-  [],
-
-  [
-    { word: "-", status: "pending" },
-    { word: "**Bold**,", status: "pending" },
-    { word: "*italic*,", status: "pending" },
-    { word: "and", status: "pending" },
-    { word: "`inline", status: "pending" },
-    { word: "code`", status:"pending"},
-    { word: "must", status: "pending" },
-    { word: "not", status: "pending" },
-    { word: "confuse", status: "pending" },
-    { word: "you.", status: "pending" }
-  ],
-
-  [
-    { word: "-", status: "pending" },
-    { word: "Create", status: "pending" },
-    { word: "lists:", status: "pending" }
-  ],
-
-  [
-    { word: "    -", status: "pending" },
-    { word: "Nested", status: "pending" },
-    { word: "lists", status: "pending" },
-    { word: "(like", status: "pending" },
-    { word: "this", status: "pending" },
-    { word: "one).", status: "pending" }
-  ],
-
-  [
-    { word: "    -", status: "pending" },
-    { word: "And", status: "pending" },
-    { word: "this", status: "pending" },
-    { word: "one.", status: "pending" }
-  ],
-
-  [
-    { word: "-", status: "pending" },
-    { word: "Use", status: "pending" },
-    { word: "[links](https://example.com)", status: "pending" },
-    { word: "correctly.", status: "pending" }
-  ],
-
-  [
-    { word: "-", status: "pending" },
-    { word: "Quotes?", status: "pending" },
-    { word: "Use", status: "pending" },
-    { word: "`>`", status: "pending" },
-    { word: "without", status: "pending" },
-    { word: "missing", status: "pending" },
-    { word: "the", status: "pending" },
-    { word: "space.", status: "pending" }
-  ],
-
-  [
-    { word: "-", status: "pending" },
-    { word: "Escape", status: "pending" },
-    { word: "characters:", status: "pending" },
-    { word: "\\*not", status: "pending" },
-    { word: "bold\\*,", status: "pending" },
-    { word: "\\_not", status: "pending" },
-    { word: "italic\\_,", status: "pending" },
-    { word: "and", status: "pending" },
-    { word: "\\\\backslashes\\\\.", status: "pending" }
-  ],
-
-  [
-    { word: "-", status: "pending" },
-    { word: "Code", status: "pending" },
-    { word: "blocks:", status: "pending" }
-  ],
-
-  [
-    { word: "```js", status: "pending" }
-  ],
-
-  [
-    { word: "const", status: "pending" },
-    { word: "trickyFunction", status: "pending" },
-    { word: "=", status: "pending" },
-    { word: "()","status": "pending" },
-    { word: "=>", status: "pending" },
-    { word: "{", status: "pending" }
-  ],
-
-  [
-    { word: "return", status: "pending" },
-    { word: "\"Mind", status: "pending" },
-    { word: "your", status: "pending" },
-    { word: "brackets!\";", status: "pending" }
-  ],
-
-  [
-    { word: "};", status: "pending" }
-  ],
-
-  [
-    { word: "```", status: "pending" }
-  ],
-
-  [
-    { word: "-", status: "pending" },
-    { word: "Don't", status: "pending" },
-    { word: "ignore", status: "pending" },
-    { word: "the", status: "pending" },
-    { word: "`#`", status: "pending" },
-    { word: "headers", status: "pending" },
-    { word: "or", status: "pending" },
-    { word: "miss", status: "pending" },
-    { word: "a", status: "pending" },
-    { word: "`---`", status: "pending" },
-    { word: "separator.", status: "pending" }
-  ],
-
-  [],
-
-  [
-    { word: "**Final", status: "pending" },
-    { word: "Warning**:", status: "pending" },
-    { word: "Inconsistency", status: "pending" },
-    { word: "is", status: "pending" },
-    { word: "your", status: "pending" },
-    { word: "worst", status: "pending" },
-    { word: "enemy.", status: "pending" },
-    { word: "Happy", status: "pending" },
-    { word: "typing!", status: "pending" }
   ]
 ];
     
@@ -265,6 +87,8 @@
 
     
     function renderText() {
+        if (typing_window.classList.contains("finished")) return;
+
         typing_window.innerHTML = "";
         for (let lineIdx = 0; lineIdx < typingText.length; lineIdx++) {
             const line = typingText[lineIdx];
@@ -305,7 +129,7 @@
         }
     }
 
-    function formatWord(originalWord, wordIdx, lineIdx, currentWord, currentLine, currentLetter){
+    function formatWord(displayWord, originalWord, wordIdx, lineIdx, currentWord, currentLine, currentLetter){
         let letters = originalWord.split('').map((char, i) => {
             let classes = "letter";
             if (lineIdx === currentLine && wordIdx === currentWord) {
@@ -315,7 +139,6 @@
                     classes += " current-letter";
                 }
             }
-            // Replace space characters with a non-breaking space for rendering.
             const displayChar = (char === ' ') ? '&nbsp;' : char;
             return `<span class="${classes}">${displayChar}</span>`;
         }).join('');
@@ -328,7 +151,34 @@
         }
         return `<span class="${wordClass}">${letters}</span>`;
     }
+    function resetTest() {
+        // Reset state variables
+        currentLine = 0;
+        currentWord = 0;
+        currentLetter = 0;
+        startTime = null;
+        correctChars = 0;
+        errorCount = 0;
+        completedWords = 0;
 
+        // Reset UI
+        clearInterval(timerInterval);
+        timerInterval = null;
+        timerEl.textContent = "00:00";
+        wpmEl.textContent = "00";
+        accEl.textContent = "00";
+        wordsEl.textContent = "00";
+
+        // Hide finish screen and re-enable input
+        // FIX: Use querySelector
+        const typing_window = document.getElementById("typing-window") 
+        typing_window.classList.remove("finished")
+        input.disabled = false;
+
+        // Re-render the text and focus
+        renderText();
+        input.focus();
+    }
 
     renderText()
 
@@ -381,6 +231,26 @@
             // Correct character press
             correctChars++;
             currentLetter++;
+
+            const isLastLine= currentLine === typingText.length - 1;
+            const isLastWord = currentWord === typingText[currentLine].length -1 ;
+            const isLastLetter = currentLetter === typingText[currentLine][currentWord].word.length
+            if (isLastLine && isLastWord && isLastLetter) {
+                clearInterval(timerInterval)
+                const typing_window = document.getElementById("typing-window")
+                typing_window.classList.add("finished")
+                typing_window.innerHTML = `
+                        <div class="finished-message">
+                            <span>Congratulations! You've completed the test.</span>
+                            <button id="restart-btn" class="restart-button" style="float: right;">Restart</button>
+                        </div>
+                    `;              
+                input.disabled = true; // Disable further typing
+                const restartBtn = document.querySelector('#restart-btn');
+                restartBtn.addEventListener('click', resetTest);
+
+
+            }
         } else if (key.length === 1) {
             // Any other character press is an error
             errorCount++;
