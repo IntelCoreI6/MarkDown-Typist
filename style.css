@@ -2,20 +2,72 @@
 
 body {
   font-family: 'JetBrains Mono', monospace;
-  background: rgb(204, 204, 204);
+  background: rgb(5, 10, 8);
   align-items: center;
   justify-content: center;
+  color: rgb(41, 195, 84);
   display: flex;
+  flex-direction: column;
 }
 
-.typing-window {
-    border: 1px solid;
-    width: 80%;
-    border-color: gray;
-    border-radius: 0.2px;
 
-}
 
-#title {
+.main-content {
+    width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    
+}
+
+
+.container {
+    border: 1px solid;
+    width: 100%;
+    box-sizing: border-box;
+    border-color: rgb(41, 195, 84);
+    border-radius: 5px;
+    text-align: left;
+    margin: 0 auto;
+    }
+.container#typing-window {
+    padding: 15px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    color: blue;
+
+}
+.container#timer {
+    padding: 7px;
+    margin-bottom: 20px;
+}
+
+.title {
+    align-items: center;
+}
+
+#stats {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content:space-between;
+    box-sizing: border-box
+}
+.mini-container {
+    padding-left: 10%;
+    padding-right: 10%;
+    flex: 1;
+    text-align: left;
+}
+
+
+.mini-container-value {
+    font-size: 30px;
+    text-transform: bold;
+}
+
+.current-letter {
+    background: rgb(41, 195, 84, 0.3);
+    border-bottom: 2px solid rhb(41, 195, 84)
 }

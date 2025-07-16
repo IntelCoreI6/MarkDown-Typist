@@ -5,15 +5,309 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Markdown typer</title>
     <link href="style.css" rel="stylesheet"/> 
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap" rel="stylesheet">
  </head>
  <body>
-    <h1 class="title">MarkDown type test</h1>
-    <div id="splashphrase"></div>
-    <div id="typing-window"></div>
+<div class="main-content">
+<h1 class="title">MarkDown type test</h1>
+
+<div id="splashphrase"></div>
+<div id="typing-window" class="container"> Hey there you are an alstarr</div>
+<div id="timer" class="container">00:00</div>
+<div id="stats">
+    <div id="wpm" class="mini-container">
+    <div class="mini-container-title">WPM</div>
+    <div id="WPM_VALUE" class="mini-container-value">00</div>
+    </div>
+    <div id="accuracy" class="mini-container">
+    <div class="mini-container-title">ACCURACY</div>
+    <div id="accuracy_value" class="mini-container-value">00</div>
+    </div>    
+    <div id="words" class="mini-container">
+    <div class="mini-container-title">WORDS</div>
+    <div id="words_VALUE" class="mini-container-value">00</div>
+    </div>
+    <input id="hiddenInput" type="text" style="opacity:0; position:absolute; left:-9999px;">
+</div>
+</div>
 <script>
     const splashes = ["Type away each day to keep all the slowness away", "Obsidian is the best!"]
     const typing_window = document.getElementById("typing-window")
+    const typingText = [
+  // Line 1
+  [
+    { word: "#", status: "pending" },
+    { word: "Mastering", status: "pending" },
+    { word: "Markdown:", status: "pending" },
+    { word: "A", status: "pending" },
+    { word: "True", status: "pending" },
+    { word: "Test", status: "pending" }
+  ],
 
+  // Empty line
+  [],
+
+  // Line 3
+  [
+    { word: ">", status: "pending" },
+    { word: "\"Typing", status: "pending" },
+    { word: "isn't", status: "pending" },
+    { word: "just", status: "pending" },
+    { word: "a", status: "pending" },
+    { word: "skill;", status: "pending" },
+    { word: "it's", status: "pending" },
+    { word: "an", status: "pending" },
+    { word: "*art*.", status: "pending" },
+    { word: "\"", status: "pending" },
+    { word: "–", status: "pending" },
+    { word: "Anonymous", status: "pending" }
+  ],
+
+  [],
+
+  // Next paragraph
+  [
+    { word: "Welcome", status: "pending" },
+    { word: "to", status: "pending" },
+    { word: "the", status: "pending" },
+    { word: "**Ultimate", status: "pending" },
+    { word: "Markdown", status: "pending" },
+    { word: "Typing", status: "pending" },
+    { word: "Challenge**.", status: "pending" },
+    { word: "Below,", status: "pending" },
+    { word: "you'll", status: "pending" },
+    { word: "encounter", status: "pending" },
+    { word: "a", status: "pending" },
+    { word: "maze", status: "pending" },
+    { word: "of", status: "pending" },
+    { word: "symbols,", status: "pending" },
+    { word: "syntax,", status: "pending" },
+    { word: "and", status: "pending" },
+    { word: "subtle", status: "pending" },
+    { word: "spacing", status: "pending" },
+    { word: "traps.", status: "pending" },
+    { word: "Stay", status: "pending" },
+    { word: "sharp:", status: "pending" }
+  ],
+
+  [],
+
+  [
+    { word: "-", status: "pending" },
+    { word: "**Bold**,", status: "pending" },
+    { word: "*italic*,", status: "pending" },
+    { word: "and", status: "pending" },
+    { word: "`inline", status: "pending" },
+    { word: "code`", status: "pending" },
+    { word: "must", status: "pending" },
+    { word: "not", status: "pending" },
+    { word: "confuse", status: "pending" },
+    { word: "you.", status: "pending" }
+  ],
+
+  [
+    { word: "-", status: "pending" },
+    { word: "Create", status: "pending" },
+    { word: "lists:", status: "pending" }
+  ],
+
+  [
+    { word: "-", status: "pending" },
+    { word: "Nested", status: "pending" },
+    { word: "lists", status: "pending" },
+    { word: "(like", status: "pending" },
+    { word: "this", status: "pending" },
+    { word: "one).", status: "pending" }
+  ],
+
+  [
+    { word: "-", status: "pending" },
+    { word: "And", status: "pending" },
+    { word: "this", status: "pending" },
+    { word: "one.", status: "pending" }
+  ],
+
+  [
+    { word: "-", status: "pending" },
+    { word: "Use", status: "pending" },
+    { word: "[links](https://example.com)", status: "pending" },
+    { word: "correctly.", status: "pending" }
+  ],
+
+  [
+    { word: "-", status: "pending" },
+    { word: "Quotes?", status: "pending" },
+    { word: "Use", status: "pending" },
+    { word: "`>`", status: "pending" },
+    { word: "without", status: "pending" },
+    { word: "missing", status: "pending" },
+    { word: "the", status: "pending" },
+    { word: "space.", status: "pending" }
+  ],
+
+  [
+    { word: "-", status: "pending" },
+    { word: "Escape", status: "pending" },
+    { word: "characters:", status: "pending" },
+    { word: "\\*not", status: "pending" },
+    { word: "bold\\*,", status: "pending" },
+    { word: "\\_not", status: "pending" },
+    { word: "italic\\_,", status: "pending" },
+    { word: "and", status: "pending" },
+    { word: "\\\\backslashes\\\\.", status: "pending" }
+  ],
+
+  [
+    { word: "-", status: "pending" },
+    { word: "Code", status: "pending" },
+    { word: "blocks:", status: "pending" }
+  ],
+
+  [
+    { word: "```js", status: "pending" }
+  ],
+
+  [
+    { word: "const", status: "pending" },
+    { word: "trickyFunction", status: "pending" },
+    { word: "=", status: "pending" },
+    { word: "()","status": "pending" },
+    { word: "=>", status: "pending" },
+    { word: "{", status: "pending" }
+  ],
+
+  [
+    { word: "return", status: "pending" },
+    { word: "\"Mind", status: "pending" },
+    { word: "your", status: "pending" },
+    { word: "brackets!\";", status: "pending" }
+  ],
+
+  [
+    { word: "};", status: "pending" }
+  ],
+
+  [
+    { word: "```", status: "pending" }
+  ],
+
+  [
+    { word: "-", status: "pending" },
+    { word: "Don't", status: "pending" },
+    { word: "ignore", status: "pending" },
+    { word: "the", status: "pending" },
+    { word: "`#`", status: "pending" },
+    { word: "headers", status: "pending" },
+    { word: "or", status: "pending" },
+    { word: "miss", status: "pending" },
+    { word: "a", status: "pending" },
+    { word: "`---`", status: "pending" },
+    { word: "separator.", status: "pending" }
+  ],
+
+  [],
+
+  [
+    { word: "**Final", status: "pending" },
+    { word: "Warning**:", status: "pending" },
+    { word: "Inconsistency", status: "pending" },
+    { word: "is", status: "pending" },
+    { word: "your", status: "pending" },
+    { word: "worst", status: "pending" },
+    { word: "enemy.", status: "pending" },
+    { word: "Happy", status: "pending" },
+    { word: "typing!", status: "pending" }
+  ]
+];
+
+    function renderText() {
+    typing_window.innerHTML = "";
+    for (let lineIdx = 0; lineIdx < typingText.length; lineIdx++) {
+        const line = typingText[lineIdx];
+        if (line.length === 0) {
+            typing_window.innerHTML += "<br>";
+            continue;
+        }
+        let lineHTML = "";
+        for (let wordIdx = 0; wordIdx < line.length; wordIdx++) {
+            lineHTML += formatWord(
+                line[wordIdx].word,
+                wordIdx,
+                lineIdx,
+                currentWord,
+                currentLine,
+                currentLetter
+            ) + " ";
+        }
+        typing_window.innerHTML += `<div>${lineHTML.trim()}</div>`;
+    }
+}
+    function formatWord(word, wordIdx, lineIdx, currentWord, currentLine, currentLetter){
+        let letters = word.split('').map((char, i) => {
+            let classes = "letters";
+            if (lineIdx === currentLine && wordIdx === currentWord && currentLetter === i) {
+                classes += " current-letter"
+            }
+            return `<span class="${classes}">${char}</span>`;
+        }).join('');
+        return `<span class="word">${letters}</span>`;
+    }
+    function startGame() {
+        typing_window.innerHTML = "";
+        for (const line of typingText) {
+            // Skip empty lines for blank lines
+            if (line.length === 0) {
+                typing_window.innerHTML += "<br>";
+                continue;
+            }
+            let lineHTML = "";
+            for (const word of line) {
+                lineHTML += formatWord(word.word) + " ";
+            }
+            typing_window.innerHTML += `<div>${lineHTML.trim()}</div>`;
+        }
+    }
+    startGame()
+
+    let currentLine = 0;
+    let currentWord = 0;
+    let currentLetter = 0;
+    let input = document.getElementById("hiddenInput")
+    input.focus();
+    input.select();
+
+    function moveToNextLetter() {
+        const word = typingText[currentLine][currentWord].word;
+        if (currentLetter < word.length - 1) {
+            currentLetter++;
+        } else {
+            // Move to next word or next line
+            if (currentWord < typingText[currentLine].length - 1) {
+                currentWord++;
+                currentLetter = 0;
+            } else {
+                // Move to next non-empty line
+                do {
+                    currentLine++;
+                } while (currentLine < typingText.length && typingText[currentLine].length === 0);
+                currentWord = 0;
+                currentLetter = 0;
+            }
+        }
+    }
+
+    input.addEventListener('input', (e) => {
+        const typedValue = e.target.value;
+        e.target.value = '';
+
+        // Get the expected character
+        const expected = typingText[currentLine][currentWord].word[currentLetter];
+        if (typedValue === expected) {
+            moveToNextLetter();
+        }
+        renderText();
+    });
+    
 </script>
  </body>
  </html>
