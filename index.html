@@ -36,8 +36,6 @@
     // FIX: Corrected variable name from wpmel to wpmEl for consistency
     const wpmEl = document.getElementById("WPM_VALUE")
     const accEl = document.getElementById("accuracy_value")
-    // Note: Your HTML ID for the words value is "rating_VALUE".
-    const wordsEl = document.getElementById("rating_VALUE")
     let input = document.getElementById("hiddenInput")
 const typingText = [
   [
@@ -301,9 +299,6 @@ const typingText = [
             // Correct space press
             correctChars++;
             completedWords++;
-            const wordsEl = document.getElementById("rating_value");
-
-            if(wordsEl) wordsEl.textContent = completedWords.toString().padStart(2, '0');
 
             if (currentWord < typingText[currentLine].length - 1) {
                 currentWord++;
