@@ -1,73 +1,149 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+
+:root {
+    --background-color: #1a1b26;
+    --foreground-color: #a9b1d6;
+    --container-bg: #24283b;
+    --border-color: #414868;
+    --accent-color: #7aa2f7;
+    --accent-color-dim: rgba(122, 162, 247, 0.3);
+    --pending-color: #565f89;
+    --correct-color: #9ece6a;
+    --error-color: #f7768e;
+}
 
 body {
   font-family: 'JetBrains Mono', monospace;
-  background: rgb(5, 10, 8);
-  align-items: center;
-  justify-content: center;
-  color: rgb(41, 195, 84);
+  background-color: var(--background-color);
+  color: var(--foreground-color);
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  transition: background-color 0.3s ease;
 }
 
-
-
 .main-content {
-    width: 600px;
-    margin: 0 auto;
+    width: 800px;
+    max-width: 90%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    
-}
-
-
-.container {
-    border: 1px solid;
-    width: 100%;
-    box-sizing: border-box;
-    border-color: rgb(41, 195, 84);
-    border-radius: 5px;
-    text-align: left;
-    margin: 0 auto;
-    }
-.container#typing-window {
-    padding: 15px;
-    margin-bottom: 20px;
-    margin-top: 10px;
-    color: blue;
-
-}
-.container#timer {
-    padding: 7px;
-    margin-bottom: 20px;
+    gap: 25px;
 }
 
 .title {
-    align-items: center;
+    font-size: 2.5rem;
+    color: var(--accent-color);
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.container {
+    width: 100%;
+    background-color: var(--container-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.container#typing-window {
+    padding: 25px;
+    font-size: 1.2rem;
+    line-height: 2;
+    color: var(--pending-color);
+    /* Add these properties */
+    max-height: 250px; /* Or any height you prefer */
+    overflow-y: hidden;
+}
+
+.container#timer {
+    padding: 10px 25px;
+    font-size: 1.5rem;
+    color: var(--accent-color);
+    text-align: center;
 }
 
 #stats {
     display: flex;
-    flex-direction: row;
     width: 100%;
-    justify-content:space-between;
-    box-sizing: border-box
-}
-.mini-container {
-    padding-left: 10%;
-    padding-right: 10%;
-    flex: 1;
-    text-align: left;
+    justify-content: space-between;
+    gap: 20px;
 }
 
+.mini-container {
+    flex: 1;
+    background-color: var(--container-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 15px 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.mini-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.mini-container-title {
+    font-size: 0.9rem;
+    color: var(--foreground-color);
+    margin-bottom: 5px;
+}
 
 .mini-container-value {
-    font-size: 30px;
-    text-transform: bold;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+/* --- Typing Text Styling --- */
+.word {
+    display: inline-block;
+}
+
+.word.pending {
+    color: var(--pending-color);
+}
+
+.word.correct {
+    color: var(--correct-color);
+}
+
+.letter {
+    transition: color 0.2s ease;
+}
+
+.letter.correct {
+    color: var(--correct-color);
+}
+
+/* --- Cursor Animation --- */
+@keyframes blink {
+  0%, 100% { background-color: transparent; }
+  50% { background-color: var(--accent-color-dim); }
 }
 
 .current-letter {
-    background: rgb(41, 195, 84, 0.3);
-    border-bottom: 2px solid rhb(41, 195, 84)
+    border-radius: 2px;
+    animation: blink 1s infinite;
+}
+
+/* --- Error Animation --- */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+
+.error-shake {
+    animation: shake 0.3s ease-in-out;
+}
+
+.current-letter.error {
+    background-color: var(--error-color) !important;
+    animation: none; /* Disable blinking during error */
 }

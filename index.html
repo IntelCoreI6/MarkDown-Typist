@@ -23,9 +23,9 @@
     <div class="mini-container-title">ACCURACY</div>
     <div id="accuracy_value" class="mini-container-value">00</div>
     </div>    
-    <div id="words" class="mini-container">
+    <div id="rating" class="mini-container">
     <div class="mini-container-title">WORDS</div>
-    <div id="words_VALUE" class="mini-container-value">00</div>
+    <div id="rating_VALUE" class="mini-container-value">00</div>
     </div>
     <input id="hiddenInput" type="text" style="opacity:0; position:absolute; left:-9999px;">
 </div>
@@ -33,6 +33,12 @@
 <script>
     const splashes = ["Type away each day to keep all the slowness away", "Obsidian is the best!"]
     const typing_window = document.getElementById("typing-window")
+    const timerEl = document.getElementById("timer")
+    const wpmel = document.getElementById("WPM_VALUE")
+    const accEl = document.getElementById("accuracy_value")
+    const rating = document.getElementById("rating_value")
+    let input = document.getElementById("hiddenInput")
+
     const typingText = [
   // Line 1
   [
@@ -74,6 +80,8 @@
     { word: "Markdown", status: "pending" },
     { word: "Typing", status: "pending" },
     { word: "Challenge**.", status: "pending" },
+  ],
+  [
     { word: "Below,", status: "pending" },
     { word: "you'll", status: "pending" },
     { word: "encounter", status: "pending" },
@@ -219,94 +227,157 @@
     { word: "typing!", status: "pending" }
   ]
 ];
+    
+    let currentLine = 0;
+    let currentWord = 0;
+    let currentLetter = 0;
 
-    function renderText() {
-    typing_window.innerHTML = "";
-    for (let lineIdx = 0; lineIdx < typingText.length; lineIdx++) {
-        const line = typingText[lineIdx];
-        if (line.length === 0) {
-            typing_window.innerHTML += "<br>";
-            continue;
-        }
-        let lineHTML = "";
-        for (let wordIdx = 0; wordIdx < line.length; wordIdx++) {
-            lineHTML += formatWord(
-                line[wordIdx].word,
-                wordIdx,
-                lineIdx,
-                currentWord,
-                currentLine,
-                currentLetter
-            ) + " ";
-        }
-        typing_window.innerHTML += `<div>${lineHTML.trim()}</div>`;
-    }
-}
-    function formatWord(word, wordIdx, lineIdx, currentWord, currentLine, currentLetter){
-        let letters = word.split('').map((char, i) => {
-            let classes = "letters";
-            if (lineIdx === currentLine && wordIdx === currentWord && currentLetter === i) {
-                classes += " current-letter"
+    let startTime = null
+    let timerInterval = null;
+    let correctChars = 0;
+    let errorCount = 0;
+
+
+    function startTimer(){
+        if (startTime) return;
+        startTime = new Date();
+        timerInterval = setInterval(() => {
+            const elapsedTime = Math.floor((new Date() - startTime)/1000)
+            const minutes = Math.floor(elapsedTime / 60).toString().padStart(2, '0');
+            const seconds = (elapsedTime % 60).toString().padStart(2, '0');
+            timerEl.textContent = `${minutes}:${seconds}`;
+
+            const timeInMinutes = elapsedTime / 60;
+            if (timeInMinutes > 0) {
+                const grossWPM = (correctChars / 5) / timeInMinutes;
+                wpmEl.textContent = Math.round(grossWPM).toString().padStart(2, '0');
             }
-            return `<span class="${classes}">${char}</span>`;
-        }).join('');
-        return `<span class="word">${letters}</span>`;
+            const totalTyped = correctChars + errorCount;
+            if (totalTyped > 0) {
+                const accuracy = (correctChars / totalTyped) * 100;
+                accEl.textContent = Math.round(accuracy).toString().padStart(2, '0');
+            }
+        }, 1000);
     }
-    function startGame() {
+
+    
+    function renderText() {
         typing_window.innerHTML = "";
-        for (const line of typingText) {
-            // Skip empty lines for blank lines
+        for (let lineIdx = 0; lineIdx < typingText.length; lineIdx++) {
+            const line = typingText[lineIdx];
             if (line.length === 0) {
                 typing_window.innerHTML += "<br>";
                 continue;
             }
             let lineHTML = "";
-            for (const word of line) {
-                lineHTML += formatWord(word.word) + " ";
+            for (let wordIdx = 0; wordIdx < line.length; wordIdx++) {
+                // Render the word itself
+                lineHTML += formatWord(
+                    line[wordIdx].word,
+                    wordIdx,
+                    lineIdx,
+                    currentWord,
+                    currentLine,
+                    currentLetter
+                );
+
+                // If not the last word, render the space after it
+                if (wordIdx < line.length - 1) {
+                    let spaceClass = "letter";
+                    // Check if the cursor should be on this space
+                    if (lineIdx === currentLine && wordIdx === currentWord && currentLetter === line[wordIdx].word.length) {
+                        spaceClass += " current-letter";
+                    }
+                    // Use &nbsp; to ensure the space is rendered and can be styled
+                    lineHTML += `<span class="${spaceClass}">&nbsp;</span>`;
+                }
             }
-            typing_window.innerHTML += `<div>${lineHTML.trim()}</div>`;
+            typing_window.innerHTML += `<div>${lineHTML}</div>`;
+        }
+        const cursor = typing_window.querySelector(".current-letter");
+        if (cursor) {
+            cursor.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest'})
         }
     }
-    startGame()
 
-    let currentLine = 0;
-    let currentWord = 0;
-    let currentLetter = 0;
-    let input = document.getElementById("hiddenInput")
-    input.focus();
-    input.select();
-
-    function moveToNextLetter() {
-        const word = typingText[currentLine][currentWord].word;
-        if (currentLetter < word.length - 1) {
-            currentLetter++;
+    function formatWord(word, wordIdx, lineIdx, currentWord, currentLine, currentLetter){
+        let letters = word.split('').map((char, i) => {
+            let classes = "letter";
+            if (lineIdx === currentLine && wordIdx === currentWord) {
+                if (i < currentLetter) {
+                    classes += " correct"
+                } else if (i === currentLetter) {
+                    classes += " current-letter"
+                }
+            }
+            return `<span class="${classes}">${char}</span>`;
+        }).join('');
+        let wordClass = "word"
+        if (lineIdx < currentLine || (lineIdx === currentLine && wordIdx < currentWord)) {
+            wordClass += " correct"
         } else {
-            // Move to next word or next line
+            wordClass += " pending";
+        }
+        return `<span class="${wordClass}">${letters}</span>`;
+    }
+
+    renderText()
+
+    input.addEventListener('keydown', (e) => {
+        e.preventDefault();
+        startTimer();
+
+        // Use e.key for layout-aware character input
+        const key = e.key;
+
+        // Get current word and check if we're at the space after it
+        const wordObj = typingText[currentLine]?.[currentWord];
+        if (!wordObj) return; // End of test
+        const isAtEndOfWord = currentLetter === wordObj.word.length;
+
+        // Clear previous error animations
+        document.querySelector('.main-content').classList.remove('error-shake');
+        const errorLetter = document.querySelector('.current-letter.error');
+        if (errorLetter) errorLetter.classList.remove('error');
+
+        if (key === 'Enter') {
+            // Advance line on Enter
+            currentLine++;
+            while (typingText[currentLine]?.length === 0) currentLine++;
+            currentWord = 0;
+            currentLetter = 0;
+        } else if (key === ' ' && isAtEndOfWord) {
+            // Correct space press
+            correctChars++;
+            completedWords++;
+            if(wordsEl) wordsEl.textContent = completedWords.toString().padStart(2, '0');
+
             if (currentWord < typingText[currentLine].length - 1) {
                 currentWord++;
-                currentLetter = 0;
             } else {
-                // Move to next non-empty line
-                do {
-                    currentLine++;
-                } while (currentLine < typingText.length && typingText[currentLine].length === 0);
+                currentLine++;
+                while (typingText[currentLine]?.length === 0) currentLine++;
                 currentWord = 0;
-                currentLetter = 0;
             }
-        }
-    }
-
-    input.addEventListener('input', (e) => {
-        const typedValue = e.target.value;
-        e.target.value = '';
-
-        // Get the expected character
-        const expected = typingText[currentLine][currentWord].word[currentLetter];
-        if (typedValue === expected) {
-            moveToNextLetter();
+            currentLetter = 0;
+        } else if (key.length === 1 && !isAtEndOfWord && key === wordObj.word[currentLetter]) {
+            // Correct character press
+            correctChars++;
+            currentLetter++;
+        } else if (key.length === 1) {
+            // Any other character press is an error
+            errorCount++;
+            document.querySelector('.main-content').classList.add('error-shake');
+            const current = document.querySelector('.current-letter');
+            if (current) current.classList.add('error');
         }
         renderText();
     });
+    window.onload = () => {
+        input.focus();
+    }
+    window.addEventListener('click', () => input.focus());
+
     
 </script>
  </body>
