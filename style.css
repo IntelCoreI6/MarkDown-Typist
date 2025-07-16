@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
+
+body {
+  font-family: 'JetBrains Mono', monospace;
+  background: rgb(204, 204, 204);
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.typing-window {
+    border: 1px solid;
+    width: 80%;
+    border-color: gray;
+    border-radius: 0.2px;
+
+}
+
+#title {
+    align-items: center;
+}
